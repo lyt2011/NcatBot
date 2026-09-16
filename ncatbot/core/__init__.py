@@ -71,7 +71,12 @@ from .registry import (
 )
 
 # Session 便利类型（从 plugin 层 re-export，方便用户导入）
-from ncatbot.plugin import SessionCancelled, SessionResult
+# 延迟到 __getattr__ 惰性导入，打破 plugin ↔ core 初始化时的循环导入
+def __getattr__(name: str):
+    if name in ("SessionCancelled", "SessionResult"):
+        from ncatbot.plugin import SessionCancelled, SessionResult
+        return SessionCancelled if name == "SessionCancelled" else SessionResult
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 __all__ = [
     "AsyncEventDispatcher",
