@@ -90,3 +90,12 @@
 | PR-04 | `match_all` 组合 | 所有谓词满足才通过 |
 | PR-05 | `match_not` 取反 | 否定谓词 |
 | PR-06 | 谓词用于 `wait_event` | 与 `AsyncEventDispatcher` 集成 |
+
+### Session 便利导出 (`test_session_exports.py`)
+
+`ncatbot.core` 惰性导出 `SessionCancelled` 和 `SessionResult`，避免 plugin ↔ core 循环导入。`dir(ncatbot.core)` 包含这两个名字，枚举操作不初始化 plugin。
+
+| 规范 ID | 说明 | 验证点 |
+|---------|------|--------|
+| CSE-01 | Session 导入顺序兼容 | 独立进程验证 plugin-first、core-first、直接导入和星号导入的类型身份 |
+| CSE-02 | Session 成员发现 | 访问前后均可通过 dir 发现，枚举不触发 plugin 初始化 |

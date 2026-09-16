@@ -173,6 +173,8 @@ python .agents/scripts/check_runtime_imports.py --strict   # 汇总 + 明细；�
 
 以下延迟导入已确认存在真实循环，保留在函数体内：
 
+`core/__init__.py` 的 Session 便利类型通过模块级 `__getattr__` 惰性导出，以避免 `plugin → loader → core → plugin` 循环；不可恢复为顶层导入。配套 `__dir__` 保持成员发现，且不触发 plugin 初始化。
+
 | 文件 | 导入 | 循环路径 |
 |------|------|---------|
 | `types/common/segment/media.py` | `from ..attachment import Attachment` 等 5 处 | `attachment.py` 顶层导入 `media.py` 中的段类型 |
