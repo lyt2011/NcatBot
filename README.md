@@ -58,13 +58,28 @@ your-project/
 
 > 这些文件让 AI Agent（如 VS Code 中的 Copilot Chat）理解 NcatBot 的 API 和用法，从而提供精准的代码建议。
 
-### 3. 初始化项目
+### 3. 初始化项目并配置适配器
 
 ```bash
 ncatbot init
 ```
 
-按提示输入机器人 QQ 号和管理员 QQ 号，CLI 会自动生成 `config.yaml` 和一个以你计算机用户名命名的模板插件。该模板插件的功能是：在群聊或私聊中发送 `hello` 时，机器人回复 `hi`。
+按提示输入机器人 QQ 号和管理员 QQ 号（非 QQ 平台可留空），随后会自动进入适配器管理界面（TUI）。启动机器人前，请在这里启用并配置要连接的平台适配器：
+
+- **↑ / ↓**：选择适配器。
+- **空格**：启用或禁用适配器。
+- **Enter**：进入所选适配器的配置向导，按提示填写连接信息；完成配置后会自动启用该适配器。
+- **q**：保存并退出。
+
+例如，连接 QQ 时选择 **NapCat** 并按 Enter，按提示选择自动安装，或填写已有 NapCat 的 WebSocket / WebUI 地址和 Token。请完成配置后再保存退出，仅勾选启用不会运行配置向导。
+
+CLI 会将配置保存到 `config.yaml`，并创建一个以你计算机用户名命名的模板插件。使用 QQ 模板时，在群聊或私聊中发送 `hello`，机器人会回复 `hi`。
+
+后续需要修改连接信息或启用其他适配器时，在项目目录运行以下命令，即可重新打开同一配置界面：
+
+```bash
+ncatbot adapter
+```
 
 ### 4. 启动
 
@@ -75,6 +90,7 @@ ncatbot run
 常用 CLI 命令：
 
 ```bash
+ncatbot adapter              # 启用、禁用或配置平台适配器
 ncatbot config show          # 查看当前配置
 ncatbot napcat diagnose      # 诊断 NapCat 连接
 ncatbot napcat stop          # 停止本机 NapCat（仅 Linux）
